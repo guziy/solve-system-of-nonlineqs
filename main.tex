@@ -1,0 +1,119 @@
+\documentclass{article}
+
+\usepackage{amsmath}
+\usepackage{lscape}
+\usepackage{xcolor}
+
+\usepackage[cache=false,outputdir=.]{minted}
+
+
+\begin{document}
+    
+\begin{landscape}
+
+    Initial vector equation: 
+    \begin{equation}
+        \overrightarrow{x_1g} = a(1-b) \overrightarrow{x_1x_2} + (1-a)b\overrightarrow{x_1x_4} + ab \overrightarrow{x_1 x_3}
+    \end{equation}
+
+    Grouping: 
+    \begin{equation}
+        \label{eq:veclast}
+        \begin{split}
+            \overrightarrow{x_1g} = a \overrightarrow{x_1x_2} + b \overrightarrow{x_1x_4} + \
+                                    ab \left(\overrightarrow{x_1 x_3} - \overrightarrow{x_1x_2} - \overrightarrow{x_1x_4}\right)
+        \end{split}
+    \end{equation}
+
+    If we take
+    \begin{equation}
+        \begin{aligned}
+            \overrightarrow{x_1g} = \left(x, y\right)  \\
+            \overrightarrow{x_1x_2} = \left(x_1, y_1\right)  \\
+            \overrightarrow{x_1x_4} = \left(x_2, y_2\right)  \\
+            \overrightarrow{x_1x_3} - \overrightarrow{x_1x_2} - \overrightarrow{x_1x_4} = \left(x_3, y_3\right)  \\
+        \end{aligned}
+    \end{equation}
+
+    The above equation (\ref{eq:veclast}) can be rewritten in terms of coordinates into 2 scalar equations of the form:
+
+    \begin{equation}
+        \label{systemtosolve}
+        \left\{
+        \begin{aligned}
+             x = x_1 a + x_2 b + x_3 a b \\ 
+             y = y_1 a + y_2 b + y_3 a b
+        \end{aligned}
+        \right.
+    \end{equation}
+    
+    Solution with respect to $b$:
+
+    \begin{equation}
+        \begin{aligned}
+            b_1 = & \frac{x y_{3} + x_{1} y_{2} - x_{2} y_{1} - x_{3} y}{2 \left(x_{2} y_{3} - x_{3} y_{2}\right)} - \\
+                  & \frac{\sqrt{x^{2} y_{3}^{2} + 2 x x_{1} y_{2} y_{3} + 2 x x_{2} y_{1} y_{3} - 2 x x_{3} y y_{3} - 4 x x_{3} y_{1} y_{2} + x_{1}^{2} y_{2}^{2} - 4 x_{1} x_{2} y y_{3} - 2 x_{1} x_{2} y_{1} y_{2} + 2 x_{1} x_{3} y y_{2} + x_{2}^{2} y_{1}^{2} + 2 x_{2} x_{3} y y_{1} + x_{3}^{2} y^{2}}}{2 \left(x_{2} y_{3} - x_{3} y_{2}\right)} \\
+            b_2 = & \frac{x y_{3} + x_{1} y_{2} - x_{2} y_{1} - x_{3} y}{2 \left(x_{2} y_{3} - x_{3} y_{2}\right)} + \\ 
+                  & \frac{\sqrt{x^{2} y_{3}^{2} + 2 x x_{1} y_{2} y_{3} + 2 x x_{2} y_{1} y_{3} - 2 x x_{3} y y_{3} - 4 x x_{3} y_{1} y_{2} + x_{1}^{2} y_{2}^{2} - 4 x_{1} x_{2} y y_{3} - 2 x_{1} x_{2} y_{1} y_{2} + 2 x_{1} x_{3} y y_{2} + x_{2}^{2} y_{1}^{2} + 2 x_{2} x_{3} y y_{1} + x_{3}^{2} y^{2}}}{2 \left(x_{2} y_{3} - x_{3} y_{2}\right)}
+        \end{aligned}
+    \end{equation}
+
+    \subsection*{Edge cases}
+
+    \begin{itemize}
+        \item 
+    
+        \begin{equation}
+            \left\{
+            \begin{aligned}
+                & x_2 y_3 - x_3 y_2 = 0 \\
+                & x_1 y_3 - x_3 y_1 \neq 0 \\
+            \end{aligned}
+            \right.
+            \Rightarrow
+            \left\{
+            \begin{aligned}
+                a = & \frac{x y_3 - y x_3}{x_1 y_3 - x_3 y_1}\\
+                b = & \frac{x - x_1 a}{x_2 + x_3 a}     
+            \end{aligned}
+            \right.
+        \end{equation}
+
+        \item All parallel: $\overrightarrow{x_1x_2}\; ||\; \overrightarrow{x_1x_3} \;||\; \overrightarrow{x_1x_4}$. 
+        In this case we have only one equation for 2 unknowns.
+        \begin{equation}
+            \left\{
+            \begin{aligned}
+                & x_2 y_3 - x_3 y_2 = 0 \\
+                & x_1 y_3 - x_3 y_1 = 0 \\
+            \end{aligned}
+            \right.
+            \Rightarrow
+            \left\{
+            \begin{aligned}
+                x y_3 - y x_3 = 0\\
+                {\rm Set: } a=0 \Rightarrow b=\frac{|\overrightarrow{x_1g}|}{|\overrightarrow{x_1x_4}|} \\
+            \end{aligned}
+            \right.
+        \end{equation}
+
+        \item Expression under the square root is negative. In this case the system does not have solutions.
+
+    \end{itemize}
+
+    \subsection*{Comments}
+    \begin{itemize}
+        \item Not sure which $b_i$ should be selected as solution, probably the first one in the range $[0, 1]$.
+    \end{itemize}
+
+
+
+    \section*{Appendix: sympy code for solving equation (\ref{systemtosolve})}
+    \inputminted{python}{main.py}
+   
+
+
+\end{landscape}
+
+
+\end{document}
